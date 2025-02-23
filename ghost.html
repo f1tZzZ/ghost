@@ -52,16 +52,16 @@
 
         // Set interval to update countdown every second
         const intervalId = setInterval(() => {
-            count = count <= 1 ? (isMobile() ? 10 : 15) : count - 1; // Switch to 10 seconds for mobile when countdown ends
-
+            // Decrease countdown or set to mobile countdown
+            count = count <= 1 ? (isMobile() ? 10 : 15) : count - 1; 
+            
             // Update countdown text
             countdownElement.textContent = `Continue? ${count}`;
 
             // If countdown reaches 0 for mobile users, redirect them after resetting to 10 seconds
             if (count === 0 && isMobile()) {
-                setTimeout(() => {
-                    window.location.href = "/next-panel.html"; // Change this to your next panel URL
-                }, 1000); // Small delay before redirect
+                // Redirect to the next panel
+                window.location.href = "/next-panel.html"; // Change this to your next panel URL
             }
         }, 1000);
 
