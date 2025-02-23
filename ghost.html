@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404: Ghost Not Found</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Press Start 2P', sans-serif;
+            text-align: center;
+            padding-top: 100px;
+            overflow: hidden;
+        }
+        .glitch {
+            font-size: 3rem;
+            text-shadow: 2px 2px #888;
+        }
+        .countdown {
+            font-size: 2rem;
+            margin-top: 20px;
+            color: #b0b0b0;
+        }
+        .hint {
+            font-size: 1rem;
+            margin-top: 20px;
+            color: #888;
+        }
+        a {
+            color: #00bfff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="glitch">404: Ghost Not Found</h1>
+    <p class="countdown">Continue? 15</p>
+    <p class="hint">Hint: There’s a way to bring the ghosts back... but only true gamers will know how.</p>
+    <a id="youtubeLink" href="https://youtu.be/YQbMtvQowX0?si=yX4AcpT5PjjuNBH0" target="_blank" style="display:none;">What are those?!</a>
+    
+    <audio id="ghostSound" src="https://freesound.org/data/previews/273/273007_5121236-lq.mp3"></audio>
+    
+    <script>
+        let count = 15; // Default countdown for desktop (15 seconds)
+        const countdownElement = document.querySelector(".countdown");
+        const hintElement = document.querySelector(".hint");
+        const youtubeLink = document.getElementById("youtubeLink");
+
+        // Set interval to update countdown every second
+        const intervalId = setInterval(() => {
+            count = count <= 1 ? (isMobile() ? 10 : 15) : count - 1; // Switch to 10 seconds for mobile when countdown ends
+
+            // Update countdown text
+            countdownElement.textContent = `Continue? ${count}`;
+
+            // If countdown reaches 0 for mobile users, redirect them after resetting to 10 seconds
+            if (count === 0 && isMobile()) {
+                setTimeout(() => {
+                    window.location.href = "/next-panel.html"; // Change this to your next panel URL
+                }, 1000); // Small delay before redirect
+            }
+        }, 1000);
+
+        // Check if the user is on a mobile device
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        // Konami Code Easter Egg for Desktop
+        const konamiCode = [38,38,40,40,37,39,37,39,66,65];
+        let inputSequence = [];
+        let konamiTriggered = false; // Flag to track if Konami code was triggered
+
+        document.addEventListener("keydown", (event) => {
+            inputSequence.push(event.keyCode);
+            if (inputSequence.toString().includes(konamiCode.toString()) && !konamiTriggered) {
+                konamiTriggered = true;
+                triggerGhostReveal();
+            }
+        });
+
+        function triggerGhostReveal() {
+            document.body.style.backgroundColor = "#e0e0e0";
+            document.body.style.color = "#121212";
+            document.querySelector(".glitch").textContent = "BOO!";
+            document.getElementById("ghostSound").play();
+            hintElement.textContent = "Hint: You've unleashed the ghost! Run while you can!";
+            youtubeLink.style.display = "block"; // Show the YouTube link
+        }
+    </script>
+</body>
+</html>
