@@ -59,7 +59,8 @@
             countdownElement.textContent = `Continue? ${count}`;
 
             // If countdown reaches 0 for mobile users, ask for confirmation before redirecting
-            if (count === 0 && isMobile()) {
+            if (count === 0 && isMobile() && !userHasConfirmed) {
+                // Display the confirmation prompt
                 const userConfirmation = window.confirm("Do you want to continue?");
                 if (userConfirmation) {
                     // Redirect to the next panel
@@ -69,8 +70,12 @@
                     count = 10;
                     countdownElement.textContent = `Continue? ${count}`;
                 }
+                // Mark that the user has been prompted, to prevent multiple prompts
+                userHasConfirmed = true;
             }
         }, 1000);
+
+        let userHasConfirmed = false; // Flag to prevent multiple confirmations
 
         // Check if the user is on a mobile device
         function isMobile() {
