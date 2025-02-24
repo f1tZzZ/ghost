@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404: Ghost Not Found</title>
+
+    <!-- Change browser tab icon to Minecraft-themed -->
+    <link rel="icon" type="image/png" href="icon.png">
+
     <style>
         body {
             background-color: #121212;
@@ -13,14 +17,19 @@
             padding-top: 100px;
             overflow: hidden;
         }
-        .glitch {
+        .steve {
             font-size: 3rem;
             text-shadow: 2px 2px #888;
         }
-        .countdown {
+        .timer {
             font-size: 2rem;
             margin-top: 20px;
             color: #b0b0b0;
+        }
+        .creeper-message {
+            font-size: 0.8rem; /* Smaller font size */
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.5); /* 50% opacity */
         }
         a {
             color: #00bfff;
@@ -29,48 +38,90 @@
             margin-top: 20px;
             display: block;
         }
+        /* Styling for the "What are those" image (Minecraft Creeper-themed) */
+        #creeperImage {
+            margin-top: 30px;
+            max-width: 500px; /* Bigger size */
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </head>
 <body>
-    <h1 class="glitch">404: Ghost Not Found</h1>
-    <p class="countdown">Continue? 15</p>
-    <p class="glitch">Hint: There’s a way to bring the ghosts back... but only true gamers will know how.</p>
+    <h1 class="steve">404: Ghost Not Found</h1>
+    <p class="timer">Continue? 15</p>
+    <p class="creeper-message">There’s a way to bring the ghosts back... but only true gamers will know how.</p>
     <a id="youtubeLink" href="https://youtu.be/YQbMtvQowX0?si=yX4AcpT5PjjuNBH0" target="_blank" style="display:none;">What are those?!</a>
-    
+
+    <!-- Add the Creeper Image below the "What are those?" link -->
+    <img id="creeperImage" src="whatarethose.png" alt="What are those?! Image" style="display:none;">
+
     <audio id="ghostSound" src="https://freesound.org/data/previews/273/273007_5121236-lq.mp3"></audio>
     
     <script>
         let count = 15; // Start the countdown from 15
-        const countdownElement = document.querySelector(".countdown");
+        const timerElement = document.querySelector(".timer");
+        let intervalId; // To store the interval ID for the initial countdown
 
         // Set interval to update countdown every second
-        const intervalId = setInterval(() => {
+        intervalId = setInterval(() => {
             // Decrease the countdown indefinitely
             count = count - 1; 
 
             // Update countdown text
-            countdownElement.textContent = `Continue? ${count}`;
+            timerElement.textContent = `Continue? ${count}`;
         }, 1000);
 
-        // Konami Code Easter Egg
-        const konamiCode = [38,38,40,40,37,39,37,39,66,65];
+        // Konami Code Easter Egg (Minecraft Code Style)
+        const minecraftCode = [38,38,40,40,37,39,37,39,66,65]; // Arrow keys + B + A
         let inputSequence = [];
         let konamiTriggered = false; // Flag to track if Konami code was triggered
 
         document.addEventListener("keydown", (event) => {
             inputSequence.push(event.keyCode);
-            if (inputSequence.toString().includes(konamiCode.toString()) && !konamiTriggered) {
+            if (inputSequence.toString().includes(minecraftCode.toString()) && !konamiTriggered) {
                 konamiTriggered = true;
-                triggerGhostReveal();
+                triggerCreeperReveal();
             }
         });
 
-        function triggerGhostReveal() {
+        function triggerCreeperReveal() {
+            // Change the page appearance to "BOO!" (Creeper reveal)
             document.body.style.backgroundColor = "#e0e0e0";
             document.body.style.color = "#121212";
-            document.querySelector(".glitch").textContent = "BOO!";
+            document.querySelector(".steve").textContent = "BOO!";
             document.getElementById("ghostSound").play();
+            document.querySelector(".creeper-message").style.display = "none"; // Hide the original message
             youtubeLink.style.display = "block"; // Show the YouTube link
+
+            // Show the Creeper Image
+            document.getElementById("creeperImage").style.display = "block";
+
+            // Stop the initial countdown once Konami code is triggered
+            clearInterval(intervalId);
+
+            // Start the countdown from 10 after the Konami code
+            startNextPanelCountdown();
+        }
+
+        // Function to handle the next panel countdown
+        function startNextPanelCountdown() {
+            let nextPanelCount = 10; // Start countdown from 10 for the next panel
+            const nextPanelCountdownElement = document.querySelector(".timer");
+            const nextPanelIntervalId = setInterval(() => {
+                nextPanelCount = nextPanelCount - 1;
+
+                // Update countdown text
+                nextPanelCountdownElement.textContent = `Continue? ${nextPanelCount}`;
+
+                // If countdown reaches 0, reload the page
+                if (nextPanelCount === 0) {
+                    clearInterval(nextPanelIntervalId);
+                    window.location.reload(); // Reload the page
+                }
+            }, 1000);
         }
     </script>
 </body>
