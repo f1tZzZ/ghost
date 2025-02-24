@@ -22,11 +22,6 @@
             margin-top: 20px;
             color: #b0b0b0;
         }
-        .hint {
-            font-size: 1rem;
-            margin-top: 20px;
-            color: #888;
-        }
         a {
             color: #00bfff;
             text-decoration: none;
@@ -39,50 +34,25 @@
 <body>
     <h1 class="glitch">404: Ghost Not Found</h1>
     <p class="countdown">Continue? 15</p>
-    <p class="hint">Hint: There’s a way to bring the ghosts back... but only true gamers will know how.</p>
+    <p class="glitch">Hint: There’s a way to bring the ghosts back... but only true gamers will know how.</p>
     <a id="youtubeLink" href="https://youtu.be/YQbMtvQowX0?si=yX4AcpT5PjjuNBH0" target="_blank" style="display:none;">What are those?!</a>
     
     <audio id="ghostSound" src="https://freesound.org/data/previews/273/273007_5121236-lq.mp3"></audio>
     
     <script>
-        let count = 15; // Default countdown for desktop (15 seconds)
+        let count = 15; // Start the countdown from 15
         const countdownElement = document.querySelector(".countdown");
-        const hintElement = document.querySelector(".hint");
-        const youtubeLink = document.getElementById("youtubeLink");
 
         // Set interval to update countdown every second
         const intervalId = setInterval(() => {
-            // Decrease countdown or set to mobile countdown
-            count = count <= 1 ? (isMobile() ? 10 : 15) : count - 1;
+            // Decrease the countdown indefinitely
+            count = count - 1; 
 
             // Update countdown text
             countdownElement.textContent = `Continue? ${count}`;
-
-            // If countdown reaches 0 for mobile users, ask for confirmation before redirecting
-            if (count === 0 && isMobile() && !userHasConfirmed) {
-                // Display the confirmation prompt
-                const userConfirmation = window.confirm("Do you want to continue?");
-                if (userConfirmation) {
-                    // Redirect to the next panel
-                    window.location.href = "/next-panel.html"; // Change this to your next panel URL
-                } else {
-                    // If they cancel, reset the countdown to 10 seconds
-                    count = 10;
-                    countdownElement.textContent = `Continue? ${count}`;
-                }
-                // Mark that the user has been prompted, to prevent multiple prompts
-                userHasConfirmed = true;
-            }
         }, 1000);
 
-        let userHasConfirmed = false; // Flag to prevent multiple confirmations
-
-        // Check if the user is on a mobile device
-        function isMobile() {
-            return /Mobi|Android/i.test(navigator.userAgent);
-        }
-
-        // Konami Code Easter Egg for Desktop
+        // Konami Code Easter Egg
         const konamiCode = [38,38,40,40,37,39,37,39,66,65];
         let inputSequence = [];
         let konamiTriggered = false; // Flag to track if Konami code was triggered
@@ -100,7 +70,6 @@
             document.body.style.color = "#121212";
             document.querySelector(".glitch").textContent = "BOO!";
             document.getElementById("ghostSound").play();
-            hintElement.textContent = "Hint: You've unleashed the ghost! Run while you can!";
             youtubeLink.style.display = "block"; // Show the YouTube link
         }
     </script>
